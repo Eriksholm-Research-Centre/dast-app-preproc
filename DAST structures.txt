@@ -1,0 +1,86 @@
+DAST structures
+
+
+app.data.Settings
+
+                      ResultType: "Speech reception threshold"
+                  AdaptiveMethod: 'Standard'
+                StoppingCriteria: 0
+                     ScoringType: "Keyword-based"
+                PresentationMode: "Audio"
+                  MaskerSettings: "Intermittent"
+                  DurationBefore: 0.5000
+                  PlaybackMethod: "Basic"
+                  PlaybackDriver: []
+                  PlaybackDevice: []
+                  PlaybackBuffer: []
+                    PlaybackMode: "Headphone"
+          PlaybackChannelsTarget: 1
+          PlaybackChannelsMasker: 1
+    PlaybackChannelsTargetAngles: 'N/A'
+    PlaybackChannelsMaskerAngles: 'N/A'
+     PlaybackConfigurationTarget: []
+     PlaybackConfigurationMasker: []
+             PlaybackChannelsMic: []
+          EqualizationFilterPath: ''
+        CalibrationMeasuredLevel: []
+          AdjustSentenceLevelRMS: 1
+       RandomizeOrderWithinLists: 0
+    ApplyHearingLossCompensation: 0
+               AudiogramFilePath: ''
+                        dBSPLRef: 95
+                         dBFSRef: -26
+                         hannLen: 2400
+                      hannWindow: [4800×1 double]
+                              Fs: 48000
+                  PsychFuncPoint: 50
+                     CorporaPath: 'C:\Users\labw\Workspaces\dast-app-preproc'
+                         preproc: [1×1 struct]
+                     UploadedCSV: 'C:\Users\labw\Workspaces\dast-app-preproc\files\HLCM_1.csv'
+                 InputSRTInQuiet: 0
+         HearingLossCompensation: []
+              EqualizationFilter: []
+                          Tester: 'LABW'
+                     Participant: '100'
+                            Date: '2025_12_15'
+                  UploadedPreset: 'DAST_default_settings'
+
+
+
+app.pers
+
+                        date: '2025_12_15'
+                   presetDir: 'C:\Users\labw\Workspaces\dast-app-preproc\presets'
+                   resultDir: 'C:\Users\labw\Workspaces\dast-app-preproc\results'
+              UploadedPreset: 'DAST_default_settings'
+                    List_F1A: [880×3 table]
+                  totButtons: 15
+        scoringAvailableFlag: 1
+            sentIdxInSession: 1
+        playbackObjectPlayer: []
+      playbackObjectRecorder: []
+    playbackObjectFileWriter: []
+               recordingFlag: 0
+                 playingFlag: 0
+           randomizationFile: [10×10 table]
+           maskerPlayingFlag: 0
+            maskerPlayingIdx: []
+              sentIdxInBlock: 1
+           blockIdxInSession: 1
+                  blockTotal: 10
+          equalizationFilter: []
+                  audiograms: []
+     hearingLossCompensation: []
+           nextSignalToNoise: []
+          adaptiveTrackPhase: []
+                  resultName: '100_2025_12_15_LABW'
+              resultFullfile: 'C:\Users\labw\Workspaces\dast-app-preproc\results\100_2025_12_15_LABW.mat'
+
+
+app.iter
+
+    corpusName: 'DAST'
+      listType: 'F1A'
+       listNum: "1"
+        target: "F1"
+        masker: "SSN_F1"
