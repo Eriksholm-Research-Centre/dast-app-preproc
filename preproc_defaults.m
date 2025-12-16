@@ -14,4 +14,5 @@ s.targetpath =        '\\demant.com\data\ERH\Media\Media\HLCM\HLCM.1';
 s.backgroundpath =    '\\demant.com\data\ERH\Media\Media\HLCM\HLCM.1\CONT\input';   % TODO remove later
 s.SNRs = [5 0];     % SNRs in current test
 s.condition = 0;    % conditions 3-7 used in HLCM.1
+s.fs = 16000;       % samplerate in HLCM
 
