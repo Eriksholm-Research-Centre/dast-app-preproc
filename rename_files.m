@@ -1,10 +1,10 @@
 % script to rename files from Szymon back to DAST sentence nrs.
 
 clear all;
-directory = 'C:\Temp\larsnoise_5dB\condition_3';
-prefix = 'input';
-output_directory = '\\demant.com\data\ERH\Media\Media\HLCM\HLCM.2\DAST\TP_1000\SNR_5\F1\condition_3';
-csvfile = 'List_F1A.csv';
+directory = 'C:\Temp\larsnoise_m1_5dB\condition_1';
+prefix = 'reference';
+output_directory = '\\demant.com\data\ERH\Media\Media\HLCM\HLCM.2\DAST\TP_1000\SNR_5\M1\condition_1';
+csvfile = 'Corpus_DAST\metadata\List_F1A.csv';
 
 
 if ~exist(output_directory, 'dir')
