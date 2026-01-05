@@ -54,7 +54,7 @@ for snr = sopt.SNRs
             end
             % average across sentences in lists
             peakcond(icond) = max(peaklist);
-            sumcond(icond) = sqrt(sum(peaklist.^2)/nrsent);
+            sumcond(icond) = sqrt((sum(rmslist.^2))/nrsent);
             fprintf('SNR %d dB, Talker %s, Cond %d: Peak level %2.1f dBFS, rms level %2.1f dBFS, acoustic level %2.1f dB SPL \n', ...
                 snr, talker{1}, icond, 20*log10(peakcond(icond)), 20*log10(sumcond(icond)), 20*log10(sumcond(icond)) + sopt.peakSPL);
             % build the vectors
