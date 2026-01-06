@@ -3,6 +3,8 @@ function Tout = dast_levels(tpnr, listnr)
 %   input: listnr(s) as vector in range 1-11
 %   output: table with rms and peak levels
 
+% TODO: remove .5s beginning and end 
+
 % defaults shared with DAST app
 sopt = preproc_defaults;
 basepath = sopt.targetpath;
