@@ -3,12 +3,12 @@ function Tout = dast_levels(tpnr, listnr)
 %   input: listnr(s) as vector in range 1-11
 %   output: table with rms and peak levels
 
-% TODO: remove .5s beginning and end 
+% TODO: remove .5s beginning and end
 
 % defaults shared with DAST app
 sopt = preproc_defaults;
 basepath = sopt.targetpath;
-
+fs = sopt.fs;
 
 csvfile = 'Corpus_DAST\metadata\List_F1A.csv';
 fprintf('Reading list definitions %s\n', csvfile);
@@ -22,6 +22,7 @@ header = {'SNR', 'Talker', 'Condition', 'Peak level', 'RMS level', 'Acoustic lev
 %Tout = table;
 irow = 1;
 nrcond = 7;
+silgap = 0.5 * fs;  % nr samples to remove = 0.5 sec
 for snr = sopt.SNRs
     for talker = sopt.talkers
         sumcond = zeros(1,nrcond);
@@ -42,6 +43,11 @@ for snr = sopt.SNRs
                     %fprintf('%s\n', filename);
                     info = audioinfo(filename);
                     y = audioread(filename);
+                    
+                    % remove 0.5s beginning and end
+                    y(1:silgap) = [];
+                    y(end-silgap+1:end) = [];
+
                     peak = max(abs(y(:)));
                     peaklist(isent) = peak;
                     rms = std(y(:));
