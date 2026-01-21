@@ -1,3 +1,4 @@
-Corpus_DAST\*.*
-results\*.*
-presets\*.*
+/Corpus_DAST
+/presets
+/results
+
