@@ -34,6 +34,7 @@ for snr = sopt.SNRs
                 filepath = fullfile(basepath, ['TP_' num2str(tpnr)], ['SNR_' num2str(snr)], talker{1}, ['condition_' num2str(icond)]);
                 if ~exist(filepath, "dir")
                     % skip missing dirs
+                    warning('Folder missing: %s', filepath);
                     continue;
                 end
                 filenr = sel_lists(isent, "Sentence").Sentence;
