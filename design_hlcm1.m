@@ -2,9 +2,8 @@
 % LABW
 
 % test persons used for test design - taken from Eriksholm Research Centre - Dokumenter\Research Projects\HLCM\Investigations\HLCM.1\Clinic
-% Note 1681 (index 5) is TP Pilot Jan 8
-% TODO remove 1681?
-hi_tp= [2017        2016        1635        2019        1681        1514        1966        1917        1585        1983        1686        1929 ];  %
+%hi_tp= [2017        2016        1635        2019        1681        1514        1966        1917        1585        1983        1686        1929 ];  %
+hi_tp= [2002        2016        2020        2019        1681        1514        2004        1917        1585        1983        1275];  % LABW updated 11feb2026
 
 special_tp = [1000 1417 99]; % default, JWNI pilot,
 
