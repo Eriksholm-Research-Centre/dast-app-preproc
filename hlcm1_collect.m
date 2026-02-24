@@ -46,6 +46,10 @@ for tpnr = TPtest
 
             % add tp column
             data.BlockResults.TPnr(:) = tpnr;
+            % add talker column
+            talker = data.SentenceInfo.Target{1};   % all the same
+            data.BlockResults.Talker(:) = string(talker);
+
             % convert List nr from string to int
             data.BlockResults.List = double(data.BlockResults.List);
 
