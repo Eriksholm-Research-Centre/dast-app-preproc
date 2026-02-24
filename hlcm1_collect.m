@@ -1,7 +1,9 @@
 % script to collect DAST results from HLCM.1
+% LABW, 24feb2026
 
 % actual TP's in design
 TPtest= [2002        2016        2020        2019        1681        1514        2004        1917        1585        1983        1275];  % LABW updated 11feb2026
+TPtest= [2002        2016        2020        2019        1681        1514        2004        1917        1585        1983];  % LABW updated 24feb2026
 
 % base path for results
 bpath = 'results\hlcm1\';   % local
@@ -13,6 +15,7 @@ Tresult = [];
 
 for tpnr = TPtest
 
+    fprintf('Reading data for TP%d from %s\n', tpnr, bpath);
     matfiles = dir([bpath num2str(tpnr) '*.mat']);
     nrfiles = length(matfiles);
     if nrfiles == 0
@@ -39,9 +42,12 @@ for tpnr = TPtest
                 warning('mat file %s incomplete data, skipped', matfiles(imat).name);
                 continue
             end
+            fprintf('Complete: Data found for TP%d in %s\n', tpnr, matfiles(imat).name);
 
             % add tp column
             data.BlockResults.TPnr(:) = tpnr;
+            % convert List nr from string to int
+            data.BlockResults.List = double(data.BlockResults.List);
 
             if isempty(Tresult)
                 Tresult = data.BlockResults;
@@ -49,13 +55,9 @@ for tpnr = TPtest
                 Tresult = [Tresult; data.BlockResults];
             end
 
-            a = 7;
-
-
         end
 
     end
 
-    a = 7;
-
 end
+writetable(Tresult, 'HLCM1_DAST.xlsx');
