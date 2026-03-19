@@ -53,6 +53,9 @@ for tpnr = TPtest
             % convert List nr from string to int
             data.BlockResults.List = double(data.BlockResults.List);
 
+            % do rau tranformation on % scores
+            data.BlockResults.Score = rau(data.BlockResults.Score/100, 20);
+
             if isempty(Tresult)
                 Tresult = data.BlockResults;
             else

@@ -1,0 +1,196 @@
+---
+title: "HLCM.1 DAST speech intelligibility scores"
+author: "Lars Bramsløw (LABW), Eriksholm Research Centre, Demant"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      toc_collapsed: true
+    toc_depth: 3
+    css: custom.css
+  pdf_document:
+    toc: true
+    toc_depth: '3'
+  word_document:
+    toc: false
+    toc_depth: '3'
+header-includes: \usepackage{svg}
+---
+
+|Revision |Date | Author | Change  | 
+|:----:|:----:|:----:|:----:|
+|1.0| 24.02.2026 | LABW | Document created |
+|1.1| 6.03.2026 | LABW | Analysis revised |
+|1.2| 18.03.2026 | LABW | Special version without TP5 (anonymous) |
+
+
+# 1 Read data and process
+
+Note: all word keyword scores were rau-transformed in MATLAB.
+
+```{r read, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# TODO: 
+
+library(readxl)
+library(lmerTest)
+library(ggplot2)
+library(emmeans)
+
+## read and convert data if need be
+tdast <- read_excel("HLCM1_DAST_anon.xlsx")
+tdast$TPnr <- as.factor(tdast$TPnr)
+tdast$Block <- as.factor(tdast$Block)
+tdast$List <- as.factor(tdast$List)
+tdast$SNR <- as.factor(tdast$SNR)
+tdast$Talker <- as.factor(tdast$Talker)
+tdast$Condition <- as.factor(tdast$Condition)
+
+# remove unused columns
+tdast$Mode <- NULL
+tdast$`List type` <- NULL
+tdast$`SRT in quiet` <- NULL
+
+# remove training lists
+tdast <- tdast[tdast$List != 11, ]
+
+# remove TP5
+tdast <- tdast[tdast$TPnr != 5, ]
+
+
+# show it
+str(tdast)
+
+### View(tdast)
+```
+Nr of TP read: `r length(levels(tdast$TPnr))`
+
+# 2 Mixed model fitting
+
+Do the mixed effects model fitting and show anova for fixed factors + ranova for random factors: 
+```{r mmfit, echo=TRUE}
+# Testing main effects and interactions of SNR and Condition
+# Talker was found to have no effect 
+# TP*Condition interaction was significant overall but no clear effects per individual
+formula <- 'ScoreRau ~ 1 + SNR*Condition + (1 | TPnr)'   # full model
+
+# lmerTest fitting the model
+mdl <- lmerTest::lmer(formula, data = tdast)
+anova(mdl)
+ranova(mdl)
+```
+Significant effect of SNR.
+
+No effect of Condition, neither SNR_Condition interaction. 
+
+Large TP (random) effect, as often seen. 
+
+
+Earlier exploratory tests:
+Showed no relevant interaction TP_Condition.
+Talker was found to have no effect. 
+TP_Condition interaction was significant overall, but no clear effects per individual.
+
+```{r summary, include=FALSE}
+summary(mdl)
+
+```
+
+
+# 3 Estimated means
+
+## 3.1 SNR
+
+Large and expected effect of SNR:
+
+```{r SNR, include=TRUE, message=FALSE, warning=FALSE}
+#lsm <- ls_means(mdl)     #lmerTest means is not the best..
+#plot(lsm, which = "scene")
+#lsm <- ls_means(mdl, "scene")
+em_SNR <- emmeans(mdl, "SNR")
+#em_SNR
+
+SNR_plot <- plot(em_SNR, horizontal = FALSE, xlab = 'Keyword score [%]')
+SNR_plot = SNR_plot + theme_bw()
+ggsave("SNR_plot.png", width = 100, height = 100, units = "mm")
+plot(SNR_plot)
+
+```
+
+## 3.2 Processing condition
+
+No significant main effect of condition:
+
+```{r condition, message=FALSE, warning=FALSE}
+
+em_Condition <- emmeans(mdl, "Condition")
+#em_Condition
+
+Condition_plot <- plot(em_Condition, horizontal = FALSE, xlab = 'Keyword score [%]')
+Condition_plot = Condition_plot + theme_bw()
+ggsave("Condition_plot.png", width = 100, height = 100, units = "mm")
+plot(Condition_plot)
+
+```
+
+No significant interaction between SNR and condition. NAL-NL2 + NR looks best in all cases:
+
+```{r SNR_condition, warning = FALSE, message = FALSE}
+em_SNRCond <- emmeans(mdl, c("Condition", "SNR"))
+#em_SNRCond
+
+SNRCond_plot <- plot(em_SNRCond, horizontal = FALSE, xlab = 'Keyword score [%]')
+SNRCond_plot = SNRCond_plot + theme_bw()
+ggsave("SNRCond_plot.png", width = 100, height = 100, units = "mm")
+plot(SNRCond_plot)
+```
+
+```{r TP}
+# em_TP <- emmeans(mdl, 'TPnr')
+# #em_TP
+# 
+# TP_plot <- plot(em_TP, horizontal = FALSE, xlab = 'Keyword score [%]')
+# TP_plot = TP_plot + theme_bw() + theme(axis.text.x = element_blank())
+# ggsave("TP_plot.png", width = 100, height = 100, units = "mm")
+# plot(TP_plot)
+
+# Large TP effect - typical in HI users
+
+
+```
+
+
+```{r TP_Condition}
+# em_TP_Cond <- emmeans(mdl, c("Condition", "TPnr"))
+# #em_TP_Cond
+# 
+# TP_Cond_plot <- plot(em_TP_Cond, horizontal = FALSE, xlab = 'Keyword score [%]')
+# TP_Cond_plot = TP_Cond_plot + theme_bw() + 
+# theme(
+#   axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)
+# )
+# 
+# ggsave("TP_Cond_plot.png", width = 400, height = 200, units = "mm")
+# plot(TP_Cond_plot)
+
+```
+
+
+
+```{r}
+# 3way interaction
+# plot(lsm, which = "space:pos:attribut")
+```
+
+
+```{r}
+# res <- plot(lsm, mult = FALSE)
+```
+
+
+# 4 Session info
+
+```{r versions, echo=FALSE}
+sessionInfo()
+```
