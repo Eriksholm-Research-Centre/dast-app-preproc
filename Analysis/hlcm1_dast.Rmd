@@ -39,7 +39,7 @@ library(ggplot2)
 library(emmeans)
 
 ## read and convert data if need be
-tdast <- read_excel("HLCM1_DAST_anon.xlsx")
+tdast <- read_excel("HLCM1_DAST.xlsx")
 tdast$TPnr <- as.factor(tdast$TPnr)
 tdast$Block <- as.factor(tdast$Block)
 tdast$List <- as.factor(tdast$List)
@@ -56,7 +56,7 @@ tdast$`SRT in quiet` <- NULL
 tdast <- tdast[tdast$List != 11, ]
 
 # remove TP5
-tdast <- tdast[tdast$TPnr != 5, ]
+# tdast <- tdast[tdast$TPnr != 5, ]
 
 
 # show it
@@ -73,7 +73,7 @@ Do the mixed effects model fitting and show anova for fixed factors + ranova for
 # Testing main effects and interactions of SNR and Condition
 # Talker was found to have no effect 
 # TP*Condition interaction was significant overall but no clear effects per individual
-formula <- 'ScoreRau ~ 1 + SNR*Condition + (1 | TPnr)'   # full model
+formula <- 'Score ~ 1 + SNR*Condition + (1 | TPnr)'   # full model
 
 # lmerTest fitting the model
 mdl <- lmerTest::lmer(formula, data = tdast)
