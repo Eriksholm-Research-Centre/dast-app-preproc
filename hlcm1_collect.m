@@ -1,9 +1,16 @@
 % script to collect DAST results from HLCM.1
 % LABW, 24feb2026
 
+
+% anonymous TPnr
+% make word scores
+anonym = 1;         % Eriksholm use 0, external use 1
+
 % actual TP's in design
 TPtest= [2002        2016        2020        2019        1681        1514        2004        1917        1585        1983        1275];  % LABW updated 11feb2026
 TPtest= [2002        2016        2020        2019        1681        1514        2004        1917        1585        1983];  % LABW updated 24feb2026
+
+TPanon= [13          2           14          4           5           6           15          8           9           10 ];
 
 % base path for results
 bpath = 'results\hlcm1\';   % local
@@ -14,6 +21,8 @@ bpath = '\\demant.com\data\ERH\Data\Data\HLCM\HLCM.1\DAST\';   % server
 Tresult = [];
 
 for tpnr = TPtest
+
+    dout = [];
 
     fprintf('Reading data for TP%d from %s\n', tpnr, bpath);
     matfiles = dir([bpath num2str(tpnr) '*.mat']);
@@ -42,16 +51,32 @@ for tpnr = TPtest
                 warning('mat file %s incomplete data, skipped', matfiles(imat).name);
                 continue
             end
-            fprintf('Complete: Data found for TP%d in %s\n', tpnr, matfiles(imat).name);
+            itp = find(TPtest == tpnr);
+            tpnra = TPanon(itp);
+            fprintf('Complete: Data found for TP%d anonym %d in %s\n', tpnr, tpnra, matfiles(imat).name);
 
             % add tp column
-            data.BlockResults.TPnr(:) = tpnr;
+            if anonym
+                data.BlockResults.TPnr(:) = tpnra;          % anonymous for external sharing
+            else
+                data.BlockResults.TPnr(:) = tpnr;
+            end
+
             % add talker column
             talker = data.SentenceInfo.Target{1};   % all the same
             data.BlockResults.Talker(:) = string(talker);
 
             % convert List nr from string to int
             data.BlockResults.List = double(data.BlockResults.List);
+
+            % save full data for anonym mode (Szymon)
+            if anonym
+                dout.BlockResults = data.BlockResults;
+                dout.KeywordScore = data.KeywordScore;
+                dout.SentenceInfo = data.SentenceInfo;
+                fprintf('Saving anonym tpnr %d\n', tpnra);
+                save(num2str(tpnra), "dout");
+            end
 
             % do rau tranformation on % scores
             data.BlockResults.Score = rau(data.BlockResults.Score/100, 20);
